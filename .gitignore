@@ -128,3 +128,4 @@ celerybeat.pid
 # System files
 .DS_Store
 Thumbs.db
+/experiment_info.json
