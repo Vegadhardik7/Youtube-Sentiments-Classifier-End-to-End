@@ -16,3 +16,4 @@ seaborn==0.13.2
 imbalanced-learn
 optuna
 xgboost
+requests
