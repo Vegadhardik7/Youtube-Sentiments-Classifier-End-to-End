@@ -2,15 +2,16 @@
   "manifest_version": 3,
   "name": "YouTube Sentiment Insights",
   "version": "1.0",
-  "description": "Analyzes YouTube video comments for sentiment.",
+  "description": "Analyzes YouTube video comments for sentiment using ML backend.",
   "action": {
     "default_popup": "popup.html"
   },
   "permissions": [
     "tabs",
-    "activeTab",
-    "scripting",
-    "http://localhost/*",
-    "https://www.googleapis.com/*"
+    "activeTab"
+  ],
+  "host_permissions": [
+    "https://www.youtube.com/*",
+    "http://3.87.125.175:5000/*"
   ]
 }
