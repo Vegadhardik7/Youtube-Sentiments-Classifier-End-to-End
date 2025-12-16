@@ -157,23 +157,29 @@ def predict_with_timestamps():
         comments = [c["text"] for c in comments_data]
         timestamps = [c["timestamp"] for c in comments_data]
 
-        processed = [preprocess_comment(c) for c in comments]
-        X = vectorizer.transform(processed)
+        # ✅ IMPORTANT: MLflow expects DataFrame, NOT csr_matrix
+        input_df = pd.DataFrame({
+            "text": comments
+        })
 
-        preds = model.predict(X).astype(int).tolist()
+        # Let MLflow model handle preprocessing internally
+        preds = model.predict(input_df)
+
+        preds = preds.astype(int).tolist()
 
         return jsonify([
             {
                 "comment": c,
-                "sentiment": p,
+                "sentiment": str(p),
                 "timestamp": t
             }
             for c, p, t in zip(comments, preds, timestamps)
         ])
 
-    except Exception as e:
+    except Exception:
         logger.exception("Prediction failed")
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": "Prediction failed"}), 500
+
 
 # ------------------------------------------------------------------
 # PIE CHART
