@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const outputDiv = document.getElementById("output");
 
   // 🔐 Backend API (EC2)
-  const API_URL = "http://3.87.125.175:5000";
+  const API_URL = "http://3.87.125.175:8080";
 
   function showMessage(html) {
     outputDiv.innerHTML = html;
