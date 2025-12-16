@@ -2,7 +2,7 @@
 
 document.addEventListener("DOMContentLoaded", async () => {
   const outputDiv = document.getElementById("output");
-  const API_KEY = 'AIxxxQ';  // Replace with your actual YouTube Data API key
+  const API_KEY = 'AIzaSyDOWQqJ6UTI5ACyENek4VyWGlYjaxMU-3Q';  // Replace with your actual YouTube Data API key
   // const API_URL = 'http://my-elb-2062136355.us-east-1.elb.amazonaws.com:80';   
   // const API_URL = 'http://127.0.0.1:5000';
   const API_URL = 'http://192.168.0.133:5000';
