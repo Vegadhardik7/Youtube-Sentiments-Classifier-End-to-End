@@ -157,14 +157,18 @@ def predict_with_timestamps():
         comments = [c["text"] for c in comments_data]
         timestamps = [c["timestamp"] for c in comments_data]
 
-        # ✅ IMPORTANT: MLflow expects DataFrame, NOT csr_matrix
-        input_df = pd.DataFrame({
-            "text": comments
-        })
+        # Preprocess
+        processed = [preprocess_comment(c) for c in comments]
 
-        # Let MLflow model handle preprocessing internally
-        preds = model.predict(input_df)
+        # Vectorize
+        X = vectorizer.transform(processed)
 
+        # ✅ Convert to DataFrame with correct feature names
+        feature_names = vectorizer.get_feature_names_out()
+        X_df = pd.DataFrame(X.toarray(), columns=feature_names)
+
+        # Predict via MLflow
+        preds = model.predict(X_df)
         preds = preds.astype(int).tolist()
 
         return jsonify([
