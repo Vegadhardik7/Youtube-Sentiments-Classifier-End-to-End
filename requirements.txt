@@ -17,4 +17,3 @@ imbalanced-learn
 optuna
 xgboost
 requests
--e .
