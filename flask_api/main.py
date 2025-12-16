@@ -5,12 +5,12 @@ import pickle
 import requests
 import matplotlib
 matplotlib.use('Agg')
-
+import mlflow
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import numpy as np
 import pandas as pd
-
+from mlflow.tracking import MlflowClient
 from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 from wordcloud import WordCloud
@@ -37,18 +37,33 @@ CORS(app)
 # ------------------------------------------------------------------
 # MODEL LOADING
 # ------------------------------------------------------------------
-def load_model(model_path, vectorizer_path):
-    with open(model_path, 'rb') as f:
-        model = pickle.load(f)
-    with open(vectorizer_path, 'rb') as f:
-        vectorizer = pickle.load(f)
+# def load_model(model_path, vectorizer_path):
+#     with open(model_path, 'rb') as f:
+#         model = pickle.load(f)
+#     with open(vectorizer_path, 'rb') as f:
+#         vectorizer = pickle.load(f)
+#     return model, vectorizer
+
+
+# model, vectorizer = load_model(
+#     "./lgbm_model.pkl",
+#     "./tfidf_vectorizer.pkl"
+# )
+
+# Load the model and vectorizer from the model registry and local storage
+def load_model_and_vectorizer(model_name, model_version, vectorizer_path):
+    # Set MLflow tracking URI to your server
+    mlflow.set_tracking_uri("http://ec2-13-221-127-40.compute-1.amazonaws.com:5000/")  # Replace with your MLflow tracking URI
+    client = MlflowClient()
+    model_uri = f"models:/{model_name}/{model_version}"
+    model = mlflow.pyfunc.load_model(model_uri)
+    with open(vectorizer_path, 'rb') as file:
+        vectorizer = pickle.load(file)
+   
     return model, vectorizer
 
-
-model, vectorizer = load_model(
-    "./lgbm_model.pkl",
-    "./tfidf_vectorizer.pkl"
-)
+# Initialize the model and vectorizer
+model, vectorizer = load_model_and_vectorizer("my_model", "1", "./tfidf_vectorizer.pkl")  # Update paths and versions as needed
 
 # ------------------------------------------------------------------
 # TEXT PREPROCESSING
